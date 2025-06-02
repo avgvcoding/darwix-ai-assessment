@@ -2,7 +2,7 @@
 
 This repository contains a Django-based web application with two AI-powered features:
 
-1. **Audio Transcription with Speaker Diarization** (Feature 1)
+1. **Audio Transcription with Speaker Diarization** (Feature 1)(Also supports multilingual audio)
 2. **Blog Post Title Suggestions** (Feature 2)
 
 Below you’ll find:
@@ -19,7 +19,6 @@ Below you’ll find:
 darwix-ai-assessment/
 ├── ai_features/
 │   ├── migrations/
-│   ├── templates/           ← (unused for CLI testing)
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
@@ -37,7 +36,7 @@ darwix-ai-assessment/
 │   └── … (other standard Django files)
 ├── manage.py
 ├── requirements.txt
-└── README.md                ← This file
+└── README.md               
 ```
 
 * **Feature 1 (Audio Transcription + Diarization)**
@@ -94,22 +93,13 @@ darwix-ai-assessment/
    > * Pydub + FFmpeg (for audio conversion)
    > * NLTK
 
-4. **Download NLTK data** (only once—subsequent runs will skip these):
 
-   ```python
-   python - <<EOF
-   import nltk
-   nltk.download("punkt")
-   nltk.download("stopwords")
-   EOF
-   ```
-
-5. **Collect or verify FFmpeg**
+4. **Collect or verify FFmpeg**
 
    * We expect FFmpeg to be placed under `ai_features/ffmpeg/bin/ffmpeg.exe`.
    * If you don’t have it there, install FFmpeg for Windows and point `AudioSegment.converter` in `views.py` to that path, or add FFmpeg to your system `PATH`.
 
-6. **Apply Migrations & Start the Server**:
+5. **Apply Migrations & Start the Server**:
 
    ```bash
    python manage.py migrate
@@ -191,12 +181,11 @@ darwix-ai-assessment/
 From your Windows command prompt (assuming the server is running at port 8000):
 
 ```powershell
-curl -X POST "http://localhost:8000/api/transcribe/" `
-     -F "audio_file=@C:/Users/avira/Music/sample.WAV"
+curl -X POST "http://localhost:8000/api/transcribe/" -F "audio_file=@D:\darwix-ai-assessment\media\uploads\sample-2.WAV"
 ```
 
-* Replace `C:/Users/avira/Music/sample.WAV` with the absolute path of any audio file on your machine.
-* The response will be printed in JSON, showing speaker‐segmented transcripts.
+* 
+* The response will be printed in JSON, showing speaker‐segmented transcripts. Also there will be a .txt file created for you to view the outputs of each speaker and what they say in the .txt file present in segments folder inside media folder.
 
 ---
 
@@ -278,9 +267,7 @@ curl -X POST "http://localhost:8000/api/transcribe/" `
 ### 3.2 Testing with `curl`
 
 ```powershell
-curl -X POST "http://localhost:8000/api/title_suggestions/" `
-     -H "Content-Type: application/json" `
-     -d "{\"content\": \"In the fast-paced world of 2025, the integration of Python, Django, and AI technologies is not just a trend but a necessity for modern web applications. Developers are increasingly combining the simplicity and power of Django with cutting-edge AI models to build smart, responsive, and user-friendly systems. This blog explores best practices for such integration, including architectural patterns, deployment strategies, and model selection. From utilizing pre-trained transformers for text summarization and classification, to embedding real-time inference capabilities with Django REST Framework, the landscape has drastically evolved. Moreover, the use of open-source libraries like Hugging Face Transformers, PyTorch, TensorFlow, and spaCy makes it easier than ever to implement powerful AI features with minimal overhead. We also explore how asynchronous views and Celery can improve performance, especially when dealing with heavy models. Containerization using Docker, automated deployments using GitHub Actions, and monitoring with Prometheus and Grafana are also discussed. As privacy concerns rise, we cover responsible AI practices including ethical data sourcing, explainability, and fairness metrics. Finally, we look into the future of AI-native web applications where users interact with intelligent systems in real time, and where developers are empowered with tools that abstract away the complexity of model serving. This comprehensive guide is meant for intermediate to advanced developers looking to stay ahead in the game by building AI-enhanced Django applications that are production-ready, scalable, and maintainable.\"}"
+curl -X POST http://localhost:8000/api/title_suggestions/ -H "Content-Type: application/json" -d "{\"content\": \"In the fast-paced world of 2025, the integration of Python, Django, and AI technologies is not just a trend but a necessity for modern web applications. Developers are increasingly combining the simplicity and power of Django with cutting-edge AI models to build smart, responsive, and user-friendly systems. This blog explores best practices for such integration, including architectural patterns, deployment strategies, and model selection. From utilizing pre-trained transformers for text summarization and classification, to embedding real-time inference capabilities with Django REST Framework, the landscape has drastically evolved. Moreover, the use of open-source libraries like Hugging Face Transformers, PyTorch, TensorFlow, and spaCy makes it easier than ever to implement powerful AI features with minimal overhead. We also explore how asynchronous views and Celery can improve performance, especially when dealing with heavy models. Containerization using Docker, automated deployments using GitHub Actions, and monitoring with Prometheus and Grafana are also discussed. As privacy concerns rise, we cover responsible AI practices including ethical data sourcing, explainability, and fairness metrics. Finally, we look into the future of AI-native web applications where users interact with intelligent systems in real time, and where developers are empowered with tools that abstract away the complexity of model serving. This comprehensive guide is meant for intermediate to advanced developers looking to stay ahead in the game by building AI-enhanced Django applications that are production-ready, scalable, and maintainable.\"}"
 ```
 
 * Note the escaping of quotes in Windows `cmd`.
